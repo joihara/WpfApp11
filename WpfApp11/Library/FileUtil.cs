@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Xml.Serialization;
 using WpfApp11.Struct;
 
@@ -12,10 +10,26 @@ namespace WpfApp11.Library
 {
     public class FileUtil
     {
-        private bool confidentialitySee;
-        public FileUtil(IUser s) {
-            confidentialitySee = s.Edit();
+        #region UserBase
+        public void CreateUser(StructUser user) {
+
+            List<StructUser> users = new List<StructUser>
+            {
+                user
+            };
+
+            SerializeConfig<StructUser[]>.Serialize("userdb.xml", users.ToArray());
         }
+
+        public StructUser ReadUser() {
+
+
+            return new StructUser();
+        }
+        #endregion
+        #region 
+        #endregion
+
 
 
         /// <summary>
@@ -44,15 +58,15 @@ namespace WpfApp11.Library
                 outer = Array.Empty<StructClient>();
             }
 
-            if (!confidentialitySee) {
-                int index = 0;
-                foreach (var item in outer)
-                {
-                    var series = item.Series_passport_number;
+            //if (!confidentialitySee) {
+            //    int index = 0;
+            //    foreach (var item in outer)
+            //    {
+            //        var series = item.;
 
-                    outer[index++].Series_passport_number = new string('*', series.Length);
-                }
-            }
+            //        outer[index++].Series_passport_number = new string('*', series.Length);
+            //    }
+            //}
 
             return outer;
         }

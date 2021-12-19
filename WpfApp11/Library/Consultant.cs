@@ -7,7 +7,7 @@ using WpfApp11.Struct;
 
 namespace WpfApp11.Library
 {
-    public class Consultant : IUser
+    public class Consultant
     {
         public virtual bool Edit() {return false;}
 
@@ -19,7 +19,7 @@ namespace WpfApp11.Library
 
         public void Init()
         {
-            fileUtil = new FileUtil(this);
+            
             
         }
 
@@ -30,11 +30,11 @@ namespace WpfApp11.Library
         public string GetInfoClients(int idClient)
         {
             var clients = fileUtil.ReadClients();
-            string fullInfo = $"Фамилия: {}" +
-                                $"Имя: {}" +
-                                $"Отчество: {}" +
-                                $"Номер телефона: {}" +
-                                $"Серия, номер паспорта: {}";
+            //string fullInfo = $"Фамилия: {}" +
+            //                    $"Имя: {}" +
+            //                    $"Отчество: {}" +
+            //                    $"Номер телефона: {}" +
+            //                    $"Серия, номер паспорта: {}";
 
             return "";
         }

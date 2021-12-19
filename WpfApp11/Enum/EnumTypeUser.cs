@@ -3,6 +3,7 @@
     public enum EnumTypeUser
     {
         Consultant,
-        Manager
+        Manager,
+        Administrator
     }
 }

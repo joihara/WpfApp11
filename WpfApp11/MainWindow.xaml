@@ -7,6 +7,46 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
+      <Grid x:Name="Enter">
+
+        <Border BorderBrush="Black" 
+                BorderThickness="1" 
+                HorizontalAlignment="Center" 
+                VerticalAlignment="Center" 
+                Width="160" 
+                Height="130" 
+                CornerRadius="8"/>
+        <StackPanel x:Name="enterPanel" 
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Center">
+          <Label Content="Пользователь" 
+                 Padding="5,0,5,0"/>
+          <TextBox x:Name="user" 
+                   Width="120" 
+                   Margin="5"/>
+          <Label Content="Пароль" 
+                 Padding="5,0,5,0"/>
+          <PasswordBox x:Name="password"
+                   Width="120" 
+                   Margin="5"/>
+          <Button x:Name="enter_button" 
+                  Content="Вход" 
+                  Margin="5" 
+                  BorderBrush="#FF968888" 
+                  Background="#FFBFBFBF" Click="enter_button_Click">
+            <Button.Resources>
+              <Style TargetType="{x:Type Border}">
+                <Setter Property="CornerRadius" Value="5"/>
+              </Style>
+            </Button.Resources>
+          </Button>
+        </StackPanel>
         
+
+      </Grid>
+      <Grid x:Name="View">
+      
+
+      </Grid>
     </Grid>
 </Window>

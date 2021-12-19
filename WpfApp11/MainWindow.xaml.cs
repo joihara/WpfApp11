@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WpfApp11.Library;
+using WpfApp11.Struct;
 
 namespace WpfApp11
 {
@@ -23,12 +24,29 @@ namespace WpfApp11
     {
         public MainWindow()
         {
-            InitializeComponent();
 
-            IUser user = new Consultant();
-            
-            user = new Manager();
-            
+            InitializeComponent();
+            StructUser user = new StructUser { 
+                Name = "Admin", 
+                Password="Admin",
+                TypeUser = Enum.EnumTypeUser.Administrator
+            };
+
+            List<StructUser> users = new List<StructUser>
+            {
+                user
+            };
+
+            SerializeConfig<StructUser[]>.Serialize("db.xml", users.ToArray());
+            var read = SerializeConfig<StructUser[]>.DeSerialize("db.xml");
+            Console.WriteLine();
+        }
+
+        private void enter_button_Click(object sender, RoutedEventArgs e)
+        {
+            var userName = user.Text;
+            var userPassword = password.Password;
+
         }
     }
 }
