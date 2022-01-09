@@ -11,20 +11,55 @@ namespace WpfApp11.Library
     public class FileUtil
     {
         #region UserBase
-        public void CreateUser(StructUser user) {
+        public bool CreateUser(string user, string pass) {
 
-            List<StructUser> users = new List<StructUser>
-            {
-                user
-            };
+            string passMd5 = Crypt.GetHash(pass);
+
+            var users = ReadUsers().ToList();
+
+            var countSearch = users.Count(e => e.Name!=null && e.Name.Equals(user));
+            var isValid = countSearch > 0;
+            if (isValid) {
+                return false;
+            }
+            var userReg = new StructUser(user, passMd5, Enum.EnumTypeUser.Consultant);
+            users.Add(userReg);
 
             SerializeConfig<StructUser[]>.Serialize("userdb.xml", users.ToArray());
+            return true;
         }
 
-        public StructUser ReadUser() {
+        public StructUser[] ReadUsers() {
+            StructUser[] read;
+            try {
+                read = SerializeConfig<StructUser[]>.DeSerialize("userdb.xml");
+            }
+            catch(Exception) {
+                read = Array.Empty<StructUser>();
+            }
+            
 
+            return read;
+        }
 
-            return new StructUser();
+        /// <summary>
+        /// Проверка на верность введённых данных учёной записи пользователя
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="pass"></param>
+        /// <returns>Вернёт пользователя если данные сходяться</returns>
+        public StructUser? CheackUser(string user, string pass) {
+            var users = ReadUsers();
+            var userIsValid = users.Any(e=>e.Name!=null && e.Name.Equals(user));
+            if (userIsValid)
+            {
+                var userSearch = users.First(e => e.Name.Equals(user));
+                if (Crypt.GetPass(pass, userSearch))
+                {
+                    return userSearch;
+                }
+            }
+            return null;
         }
         #endregion
         #region 

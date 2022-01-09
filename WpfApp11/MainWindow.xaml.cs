@@ -22,31 +22,85 @@ namespace WpfApp11
     /// </summary>
     public partial class MainWindow : Window
     {
+        private readonly FileUtil fileUtil = new FileUtil();
         public MainWindow()
         {
 
             InitializeComponent();
-            StructUser user = new StructUser { 
-                Name = "Admin", 
-                Password="Admin",
-                TypeUser = Enum.EnumTypeUser.Administrator
-            };
 
-            List<StructUser> users = new List<StructUser>
-            {
-                user
-            };
 
-            SerializeConfig<StructUser[]>.Serialize("db.xml", users.ToArray());
             var read = SerializeConfig<StructUser[]>.DeSerialize("db.xml");
             Console.WriteLine();
         }
 
         private void enter_button_Click(object sender, RoutedEventArgs e)
         {
+            
+
+        }
+
+        public void Register() {
+            var userName = regUser.Text;
+            var userPassword = regPass.Password;
+            var reUserPassword = reRegPass.Password;
+
+            if (userPassword == reUserPassword)
+            {
+                var isValidate = fileUtil.CreateUser(userName, userPassword);
+                if (!isValidate)
+                {
+                    registerValidate.Text = "Пользователь уже существует";
+                }
+                else {
+                    registerValidate.Text = "Пользователь Зарегистрирован";
+                }
+            }
+            else {
+                registerValidate.Text = "Пароли не совпадают";
+            }
+
+            
+        }
+
+        public void Enter() {
             var userName = user.Text;
             var userPassword = password.Password;
+            var isValidate = fileUtil.CheackUser(userName, userPassword);
+            if (isValidate!=null)
+            {
+                EnterGrid.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                enterValidate.Text = "Неверные данные";
+            }
 
+        }
+
+        //Кнопка Регистрация
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            EnterGrid.Visibility = Visibility.Hidden;
+            RegisterGrid.Visibility = Visibility.Visible;
+        }
+        //Кнопка Вход
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            Enter();
+        }
+        //Кнопка Зарегистрироваться
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            Register();
+        }
+        //Кнопка Вернуться
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            regUser.Text = "";
+            regPass.Password = "";
+            reRegPass.Password = "";
+            EnterGrid.Visibility = Visibility.Visible;
+            RegisterGrid.Visibility = Visibility.Hidden;
         }
     }
 }

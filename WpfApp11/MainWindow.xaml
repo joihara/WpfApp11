@@ -6,45 +6,106 @@
         xmlns:local="clr-namespace:WpfApp11"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-      <Grid x:Name="Enter">
+    <Window.Resources>
 
-        <Border BorderBrush="Black" 
-                BorderThickness="1" 
-                HorizontalAlignment="Center" 
+        <Style TargetType="PasswordBox">
+            <Setter Property="Margin" 
+                    Value="5"/>
+            <Setter Property="Width" 
+                    Value="120"/>
+        </Style>
+        
+        <Style TargetType="TextBox">
+            <Setter Property="Margin" 
+                    Value="5"/>
+            <Setter Property="Width" 
+                    Value="120"/>
+            <Setter Property="Height" 
+                    Value="20"/>
+        </Style>
+
+        <Style TargetType="Button">
+            <Style.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius"
+                            Value="5"/>
+                </Style>
+            </Style.Resources>
+            <Setter Property="Margin" 
+                    Value="5"/>
+            <Setter Property="BorderBrush" 
+                    Value="Black"/>
+            <Setter Property="Background" 
+                    Value="LightGray"/>
+        </Style>
+
+        <Style TargetType="Border">
+            <Setter Property="CornerRadius" 
+                    Value="5"/>
+            <Setter Property="BorderThickness" 
+                    Value="1"/>
+            <Setter Property="BorderBrush" 
+                    Value="Black"/>
+        </Style>
+    </Window.Resources>
+    
+    <Grid>
+        
+        
+        <Grid x:Name="EnterGrid">
+            <Border HorizontalAlignment="Center" 
                 VerticalAlignment="Center" 
-                Width="160" 
-                Height="130" 
-                CornerRadius="8"/>
-        <StackPanel x:Name="enterPanel" 
-                    HorizontalAlignment="Center" 
-                    VerticalAlignment="Center">
-          <Label Content="Пользователь" 
-                 Padding="5,0,5,0"/>
-          <TextBox x:Name="user" 
-                   Width="120" 
-                   Margin="5"/>
-          <Label Content="Пароль" 
-                 Padding="5,0,5,0"/>
-          <PasswordBox x:Name="password"
-                   Width="120" 
-                   Margin="5"/>
-          <Button x:Name="enter_button" 
-                  Content="Вход" 
-                  Margin="5" 
-                  BorderBrush="#FF968888" 
-                  Background="#FFBFBFBF" Click="enter_button_Click">
-            <Button.Resources>
-              <Style TargetType="{x:Type Border}">
-                <Setter Property="CornerRadius" Value="5"/>
-              </Style>
-            </Button.Resources>
-          </Button>
-        </StackPanel>
+                Width="170" 
+                Height="200"
+               />
+            <StackPanel
+                        HorizontalAlignment="Center" 
+                        VerticalAlignment="Center">
+                <Label Content="Пользователь" 
+                     Padding="5,0"/>
+                <TextBox x:Name="user"/>
+                <Label Content="Пароль" 
+                     Padding="5,0"/>
+                <PasswordBox x:Name="password"/>
+                <TextBlock x:Name="enterValidate"/>
+                <Button 
+                    Content="Вход" Click="Button_Click_1"/>
+
+                <Button 
+                    Content="Регистрация" Click="Button_Click"/>
+            </StackPanel>
         
 
       </Grid>
-      <Grid x:Name="View">
+
+        <Grid x:Name="RegisterGrid" 
+              Visibility="Hidden">
+            <Border HorizontalAlignment="Center" 
+                VerticalAlignment="Center" 
+                Width="170" 
+                Height="220"
+               />
+            <StackPanel
+                HorizontalAlignment="Center" 
+                VerticalAlignment="Center">
+                <Label Content="Пользователь" 
+                     Padding="5,0"/>
+                <TextBox x:Name="regUser"/>
+                <Label Content="Пароль" 
+                     Padding="5,0"/>
+                <PasswordBox x:Name="regPass"/>
+                <Label Content="Повтор пароля" 
+                     Padding="5,0"/>
+                <PasswordBox x:Name="reRegPass"/>
+                <TextBlock x:Name="registerValidate"/>
+                <Button Content="Зарегистрироваться" Click="Button_Click_2"/>
+                <Button Content="Вернутся" Click="Button_Click_3"/>
+            </StackPanel>
+           
+        </Grid>
+
+        <Grid x:Name="View"
+              Visibility="Collapsed">
       
 
       </Grid>
