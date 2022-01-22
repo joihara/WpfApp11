@@ -27,15 +27,28 @@ namespace WpfApp11
         {
 
             InitializeComponent();
-
-
-            var read = SerializeConfig<StructUser[]>.DeSerialize("db.xml");
+            AddListView();
             Console.WriteLine();
         }
 
         private void enter_button_Click(object sender, RoutedEventArgs e)
         {
             
+
+        }
+
+        public void AddListView() { 
+            List<StructClient> list = new List<StructClient>();
+
+            list.Add(new StructClient("Олин Роман Алексеевич", "89991257789", "23242424"));
+            list.Add(new StructClient("Олин Роман Алексеевич", "89991257789", "23242424"));
+            list.Add(new StructClient("Олин Роман Алексеевич", "89991257789", "23242424"));
+            list.Add(new StructClient("Олин Роман Алексеевич", "89991257789", "23242424"));
+
+            foreach (var item in list)
+            {
+                listView.Items.Add(item);
+            }
 
         }
 

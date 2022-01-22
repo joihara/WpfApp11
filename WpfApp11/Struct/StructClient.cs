@@ -5,29 +5,12 @@ namespace WpfApp11.Struct
     [Serializable]
     public struct StructClient
     {
-        private string first_name; //Имя
-        private string last_name; //Фамилия
-        private string second_name; //Отчество
-        private string phone_number; //Номер телефона
-        private string passport_number_and_series; //Номер и серия паспорта
+        public string first_name { set; get; } //Имя
+        public string last_name { set; get; } //Фамилия
+        public string second_name { set; get; } //Отчество
+        public string phone_number { set; get; } //Номер телефона
+        public string passport_number_and_series { set; get; } //Номер и серия паспорта
+        public string dates_of_the_time_change { set; get; } //Время изменения записи
 
-
-        /// <summary>
-        /// Данные клиента
-        /// </summary>
-
-        public StructClient(string fullName, string phone_number, string passport_number_and_series) {
-            var names = fullName.Split(' ');
-            first_name = names[0];
-            last_name = names[1];
-            second_name = names[2];
-
-            this.phone_number = phone_number;
-            this.passport_number_and_series = passport_number_and_series;
-        }
-
-        public string FullName(string first,string last,string second) { 
-            return first + " " + last + " " + second;
-        }
     }
 }

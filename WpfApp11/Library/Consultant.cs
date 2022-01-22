@@ -1,42 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WpfApp11.Struct;
 
 namespace WpfApp11.Library
 {
     public class Consultant
     {
-        public virtual bool Edit() {return false;}
+        private readonly FileUtil fileUtil = new FileUtil();
 
-        private FileUtil fileUtil;
-
-        public Consultant() {
-            Init();
+        public void EditPhoneNumber(int id, string phoneNumber) {
+            if (phoneNumber != "")
+            {
+                var client = fileUtil.ReadClients()[id];
+                client.phone_number = phoneNumber;
+                fileUtil.EditClient(id, client);
+            }
         }
 
-        public void Init()
-        {
-            
-            
-        }
-
-        public void EditPhoneNumber() { 
-            
-        }
-
-        public string GetInfoClients(int idClient)
+        public string[] GetInfoClients()
         {
             var clients = fileUtil.ReadClients();
-            //string fullInfo = $"Фамилия: {}" +
-            //                    $"Имя: {}" +
-            //                    $"Отчество: {}" +
-            //                    $"Номер телефона: {}" +
-            //                    $"Серия, номер паспорта: {}";
+            List<string> ClientsList = new List<string>();
+            foreach (var client in clients) {
+                string isPassport = client.passport_number_and_series.Count() > 0 ? "******************" : "";
+                string fullInfo = $"Фамилия: {client.second_name};" +
+                                    $"Имя: {client.first_name};" +
+                                    $"Отчество: {client.last_name};" +
+                                    $"Номер телефона: {client.phone_number};" +
+                                    $"Серия, номер паспорта: {isPassport}/";
+                ClientsList.Add(fullInfo);
+            }
 
-            return "";
+            return ClientsList.ToArray();
         }
     }
 }

@@ -60,6 +60,7 @@
     <Compile Include="Library\Consultant.cs" />
     <Compile Include="Library\Crypt.cs" />
     <Compile Include="Library\FileUtil.cs" />
+    <Compile Include="Library\Manager.cs" />
     <Compile Include="Library\SerializeConfig.cs" />
     <Compile Include="Struct\StructClient.cs" />
     <Compile Include="Struct\StructUser.cs" />

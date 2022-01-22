@@ -52,7 +52,7 @@
     <Grid>
         
         
-        <Grid x:Name="EnterGrid">
+        <Grid x:Name="EnterGrid" d:IsHidden="True">
             <Border HorizontalAlignment="Center" 
                 VerticalAlignment="Center" 
                 Width="170" 
@@ -105,9 +105,26 @@
         </Grid>
 
         <Grid x:Name="View"
-              Visibility="Collapsed">
-      
+              >
+            <DockPanel>
+                <ListView x:Name="listView" Width="650">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Фамилия" DisplayMemberBinding="{Binding last_name}"/>
+                            <GridViewColumn Header="Имя" DisplayMemberBinding="{Binding first_name}"/>
+                            <GridViewColumn Header="Отчество" DisplayMemberBinding="{Binding second_name}"/>
+                            <GridViewColumn Header="Номер телефона" DisplayMemberBinding="{Binding phone_number}"/>
+                            <GridViewColumn Width="200" Header="Серия, номер паспорта" DisplayMemberBinding="{Binding passport_number_and_series}"/>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+                <StackPanel Width="120">
+                    <Button Content="Изменить"/>
+                </StackPanel>
+            </DockPanel>
+            
 
-      </Grid>
+
+        </Grid>
     </Grid>
 </Window>
