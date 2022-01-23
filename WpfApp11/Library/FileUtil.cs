@@ -10,7 +10,7 @@ namespace WpfApp11.Library
 {
     public class FileUtil
     {
-        #region UserBase
+        #region Пользовательская база
         public bool CreateUser(string user, string pass) {
 
             string passMd5 = Crypt.GetHash(pass);
@@ -22,7 +22,12 @@ namespace WpfApp11.Library
             if (isValid) {
                 return false;
             }
-            var userReg = new StructUser(user, passMd5, Enum.EnumTypeUser.Consultant);
+            var userReg = new StructUser
+            {
+                Name = user,
+                Password = passMd5,
+                TypeUser = Enum.EnumTypeUser.Consultant
+            };
             users.Add(userReg);
 
             SerializeConfig<StructUser[]>.Serialize("userdb.xml", users.ToArray());
@@ -62,11 +67,7 @@ namespace WpfApp11.Library
             return null;
         }
         #endregion
-        #region 
-        #endregion
-
-
-
+        #region Клиентская база
         /// <summary>
         /// Название файла для сохранения списка клиентов
         /// </summary>
@@ -92,16 +93,6 @@ namespace WpfApp11.Library
             {
                 outer = Array.Empty<StructClient>();
             }
-
-            //if (!confidentialitySee) {
-            //    int index = 0;
-            //    foreach (var item in outer)
-            //    {
-            //        var series = item.;
-
-            //        outer[index++].Series_passport_number = new string('*', series.Length);
-            //    }
-            //}
 
             return outer;
         }
@@ -134,7 +125,8 @@ namespace WpfApp11.Library
         /// <param name="id"></param>
         /// <param name="client"></param>
         /// <returns></returns>
-        public bool EditClient(int id, StructClient client) {
+        public bool EditClient(int id, StructClient client)
+        {
             try
             {
                 List<StructClient> clients = new List<StructClient>();
@@ -178,7 +170,12 @@ namespace WpfApp11.Library
             }
             return fs;
         }
+        #endregion
 
-        
+
+
+
+
+
     }
 }

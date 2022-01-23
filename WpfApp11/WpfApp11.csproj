@@ -56,14 +56,23 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Enum\EnumTypeField.cs" />
     <Compile Include="Enum\EnumTypeUser.cs" />
-    <Compile Include="Library\Consultant.cs" />
+    <Compile Include="RecordChange.xaml.cs">
+      <DependentUpon>RecordChange.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Struct\StructChangeType.cs" />
+    <Compile Include="User\Consultant.cs" />
     <Compile Include="Library\Crypt.cs" />
     <Compile Include="Library\FileUtil.cs" />
-    <Compile Include="Library\Manager.cs" />
+    <Compile Include="User\Manager.cs" />
     <Compile Include="Library\SerializeConfig.cs" />
     <Compile Include="Struct\StructClient.cs" />
     <Compile Include="Struct\StructUser.cs" />
+    <Page Include="Dict.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -76,6 +85,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="RecordChange.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -104,7 +117,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Frame\" />
     <Folder Include="Interface\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

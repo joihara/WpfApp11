@@ -40,10 +40,21 @@ namespace WpfApp11
         public void AddListView() { 
             List<StructClient> list = new List<StructClient>();
 
-            list.Add(new StructClient("Олин Роман Алексеевич", "89991257789", "23242424"));
-            list.Add(new StructClient("Олин Роман Алексеевич", "89991257789", "23242424"));
-            list.Add(new StructClient("Олин Роман Алексеевич", "89991257789", "23242424"));
-            list.Add(new StructClient("Олин Роман Алексеевич", "89991257789", "23242424"));
+            list.Add(new StructClient {
+                First_name = "Роман",
+                Second_name = "Алексеевич",
+                Last_name = "Олин",
+                Phone_number = "8-------------------",
+                Passport_number_and_series = "**** ******",
+                Change = new StructChangeType {
+                    DataChanged = Enum.EnumTypeField.FullName,
+                    DataTimeChanged = DateTime.Now.ToString(),
+                    TypeChanged = "Примечание",
+                    TypeUser = Enum.EnumTypeUser.Consultant
+                }
+            
+            });
+            
 
             foreach (var item in list)
             {
@@ -114,6 +125,11 @@ namespace WpfApp11
             reRegPass.Password = "";
             EnterGrid.Visibility = Visibility.Visible;
             RegisterGrid.Visibility = Visibility.Hidden;
+        }
+
+        private void UpdateRecord_Click(object sender, RoutedEventArgs e)
+        {
+            new RecordChange().ShowDialog();
         }
     }
 }
