@@ -4,13 +4,14 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Xml.Serialization;
+using WpfApp11.Enum;
 using WpfApp11.Struct;
 
 namespace WpfApp11.Library
 {
     public class FileUtil
     {
-        #region UserBase
+        #region Пользовательская база
         public bool CreateUser(string user, string pass) {
 
             string passMd5 = Crypt.GetHash(pass);
@@ -22,7 +23,12 @@ namespace WpfApp11.Library
             if (isValid) {
                 return false;
             }
-            var userReg = new StructUser(user, passMd5, Enum.EnumTypeUser.Consultant);
+            var userReg = new StructUser
+            {
+                Name = user,
+                Password = passMd5,
+                TypeUser = Enum.EnumTypeUser.Consultant
+            };
             users.Add(userReg);
 
             SerializeConfig<StructUser[]>.Serialize("userdb.xml", users.ToArray());
@@ -62,15 +68,33 @@ namespace WpfApp11.Library
             return null;
         }
         #endregion
-        #region 
-        #endregion
-
-
-
+        #region Клиентская база
         /// <summary>
         /// Название файла для сохранения списка клиентов
         /// </summary>
         private readonly string filename = "Client.db";
+
+        /// <summary>
+        /// Чтение списка с клиентами Зависимость от группы
+        /// </summary>
+        /// <returns></returns>
+        public StructClient[] ReadClients(EnumTypeUser typeUser)
+        {
+        var outer = ReadClients();
+            if (typeUser == EnumTypeUser.Consultant)
+            {
+                List<StructClient> svm = new List<StructClient>();
+                foreach (var client in outer) {
+                    var temp = client;
+                    string star = "**** ******";
+                    temp[4] = star;
+                    svm.Add(temp);
+                }
+
+                outer = svm.ToArray();
+            }
+        return outer;
+        }
 
         /// <summary>
         /// Чтение списка с клиентами
@@ -92,16 +116,6 @@ namespace WpfApp11.Library
             {
                 outer = Array.Empty<StructClient>();
             }
-
-            //if (!confidentialitySee) {
-            //    int index = 0;
-            //    foreach (var item in outer)
-            //    {
-            //        var series = item.;
-
-            //        outer[index++].Series_passport_number = new string('*', series.Length);
-            //    }
-            //}
 
             return outer;
         }
@@ -134,7 +148,8 @@ namespace WpfApp11.Library
         /// <param name="id"></param>
         /// <param name="client"></param>
         /// <returns></returns>
-        public bool EditClient(int id, StructClient client) {
+        public bool EditClient(int id, StructClient client)
+        {
             try
             {
                 List<StructClient> clients = new List<StructClient>();
@@ -178,7 +193,12 @@ namespace WpfApp11.Library
             }
             return fs;
         }
+        #endregion
 
-        
+
+
+
+
+
     }
 }

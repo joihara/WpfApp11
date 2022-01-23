@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WpfApp11.Enum;
 using WpfApp11.Library;
 using WpfApp11.Struct;
 
@@ -27,7 +28,10 @@ namespace WpfApp11
         {
 
             InitializeComponent();
-            AddListView();
+
+            //LTypeUser = EnumTypeUser.Consultant; //Debug
+
+            
             Console.WriteLine();
         }
 
@@ -36,20 +40,16 @@ namespace WpfApp11
             
 
         }
+        List<StructClient> list = new List<StructClient>();
 
-        public void AddListView() { 
-            List<StructClient> list = new List<StructClient>();
-
-            list.Add(new StructClient("Олин Роман Алексеевич", "89991257789", "23242424"));
-            list.Add(new StructClient("Олин Роман Алексеевич", "89991257789", "23242424"));
-            list.Add(new StructClient("Олин Роман Алексеевич", "89991257789", "23242424"));
-            list.Add(new StructClient("Олин Роман Алексеевич", "89991257789", "23242424"));
-
+        private void UpdateTable()
+        {
+            list = fileUtil.ReadClients(LTypeUser).ToList();
+            listView.Items.Clear();
             foreach (var item in list)
             {
                 listView.Items.Add(item);
             }
-
         }
 
         public void Register() {
@@ -82,6 +82,9 @@ namespace WpfApp11
             if (isValidate!=null)
             {
                 EnterGrid.Visibility = Visibility.Collapsed;
+                View.Visibility = Visibility.Visible;
+                LTypeUser = isValidate.Value.TypeUser;
+                UpdateTable();
             }
             else
             {
@@ -114,6 +117,31 @@ namespace WpfApp11
             reRegPass.Password = "";
             EnterGrid.Visibility = Visibility.Visible;
             RegisterGrid.Visibility = Visibility.Hidden;
+        }
+
+        private StructClient SelectClient { set; get; }
+        private EnumTypeUser LTypeUser { set; get; }
+
+        private void UpdateRecord_Click(object sender, RoutedEventArgs e)
+        {
+            new RecordChange(listView.SelectedIndex ,SelectClient, LTypeUser).ShowDialog();
+            UpdateRecord.IsEnabled = false;
+            UpdateTable();
+        }
+
+        private void listView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            SelectClient = list[listView.SelectedIndex];
+            UpdateRecord.IsEnabled = true;
+        }
+
+        private void AddRecord_Click(object sender, RoutedEventArgs e)
+        {
+            var addDialog = new AddRecord();
+            addDialog.ShowDialog();
+            fileUtil.AddClient(addDialog.client);
+            UpdateRecord.IsEnabled = false;
+            UpdateTable();
         }
     }
 }

@@ -6,53 +6,13 @@
         xmlns:local="clr-namespace:WpfApp11"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
+
     <Window.Resources>
-
-        <Style TargetType="PasswordBox">
-            <Setter Property="Margin" 
-                    Value="5"/>
-            <Setter Property="Width" 
-                    Value="120"/>
-        </Style>
-        
-        <Style TargetType="TextBox">
-            <Setter Property="Margin" 
-                    Value="5"/>
-            <Setter Property="Width" 
-                    Value="120"/>
-            <Setter Property="Height" 
-                    Value="20"/>
-        </Style>
-
-        <Style TargetType="Button">
-            <Style.Resources>
-                <Style TargetType="Border">
-                    <Setter Property="CornerRadius"
-                            Value="5"/>
-                </Style>
-            </Style.Resources>
-            <Setter Property="Margin" 
-                    Value="5"/>
-            <Setter Property="BorderBrush" 
-                    Value="Black"/>
-            <Setter Property="Background" 
-                    Value="LightGray"/>
-        </Style>
-
-        <Style TargetType="Border">
-            <Setter Property="CornerRadius" 
-                    Value="5"/>
-            <Setter Property="BorderThickness" 
-                    Value="1"/>
-            <Setter Property="BorderBrush" 
-                    Value="Black"/>
-        </Style>
+        <ResourceDictionary Source="Dict.xaml" />
     </Window.Resources>
-    
     <Grid>
-        
-        
-        <Grid x:Name="EnterGrid" d:IsHidden="True">
+
+        <Grid x:Name="EnterGrid">
             <Border HorizontalAlignment="Center" 
                 VerticalAlignment="Center" 
                 Width="170" 
@@ -104,22 +64,24 @@
            
         </Grid>
 
-        <Grid x:Name="View"
+        <Grid x:Name="View" Visibility="Collapsed"
               >
             <DockPanel>
-                <ListView x:Name="listView" Width="650">
+                <ListView x:Name="listView" Width="650" 
+                          SelectionChanged="listView_SelectionChanged">
                     <ListView.View>
                         <GridView>
-                            <GridViewColumn Header="Фамилия" DisplayMemberBinding="{Binding last_name}"/>
-                            <GridViewColumn Header="Имя" DisplayMemberBinding="{Binding first_name}"/>
-                            <GridViewColumn Header="Отчество" DisplayMemberBinding="{Binding second_name}"/>
-                            <GridViewColumn Header="Номер телефона" DisplayMemberBinding="{Binding phone_number}"/>
-                            <GridViewColumn Width="200" Header="Серия, номер паспорта" DisplayMemberBinding="{Binding passport_number_and_series}"/>
+                            <GridViewColumn Header="Фамилия" DisplayMemberBinding="{Binding Last_name}"/>
+                            <GridViewColumn Header="Имя" DisplayMemberBinding="{Binding First_name}"/>
+                            <GridViewColumn Header="Отчество" DisplayMemberBinding="{Binding Second_name}"/>
+                            <GridViewColumn Header="Номер телефона" DisplayMemberBinding="{Binding Phone_number}"/>
+                            <GridViewColumn Width="200" Header="Серия, номер паспорта" DisplayMemberBinding="{Binding Passport_number_and_series}"/>
                         </GridView>
                     </ListView.View>
                 </ListView>
                 <StackPanel Width="120">
-                    <Button Content="Изменить"/>
+                    <Button x:Name="AddRecord" Content="Добавить" Click="AddRecord_Click"/>
+                    <Button x:Name="UpdateRecord" Content="Изменить" Click="UpdateRecord_Click" IsEnabled="False"/>
                 </StackPanel>
             </DockPanel>
             
