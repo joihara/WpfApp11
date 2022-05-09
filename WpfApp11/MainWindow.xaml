@@ -12,7 +12,7 @@
     </Window.Resources>
     <Grid>
 
-        <Grid x:Name="EnterGrid" Visibility="Collapsed">
+        <Grid x:Name="EnterGrid" Visibility="Visible">
             <Border HorizontalAlignment="Center" 
                 VerticalAlignment="Center" 
                 Width="170" 
@@ -65,7 +65,7 @@
 
         </Grid>
 
-        <Grid x:Name="View" Visibility="Visible">
+        <Grid x:Name="View" Visibility="Collapsed">
             
 
             <DockPanel HorizontalAlignment="Center"
