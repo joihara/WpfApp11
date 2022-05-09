@@ -5,34 +5,50 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp11"
         mc:Ignorable="d"
-        Title="RecordChange" Height="350" Width="215" ResizeMode="NoResize" WindowStyle="SingleBorderWindow">
+        Title="RecordChange" Height="254" Width="494" ResizeMode="NoResize" WindowStyle="SingleBorderWindow">
     <Window.Resources>
         <ResourceDictionary Source="Dict.xaml" />
     </Window.Resources>
 
     <StackPanel x:Name="Base"
-                Width="200" 
-                HorizontalAlignment="Left">
-        <Label Content="Имя"/>
-        <TextBox x:Name="RFirstName" Width="auto" TextChanged="RFirstName_TextChanged"/>
-        <Label Content="Фамилия"/>
-        <TextBox x:Name="RLastName" Width="auto" TextChanged="RLastName_TextChanged"/>
+                Width="426" 
+                HorizontalAlignment="Center">
+        <DockPanel LastChildFill="False">
+            <StackPanel>
+                <Label Content="Имя"/>
+                <TextBox x:Name="RFirstName" Width="200" TextChanged="RFirstName_TextChanged"/>
+            </StackPanel>
+            <StackPanel>
+                <Label Content="Фамилия"/>
+                <TextBox x:Name="RLastName" Width="200" TextChanged="RLastName_TextChanged"/>
+            </StackPanel>
+        </DockPanel>
+
         <Label Content="Отчество"/>
-        <TextBox x:Name="RSecondName" Width="auto" TextChanged="RSecondName_TextChanged"/>
-        <Label Content="Номер телефона"/>
-        <TextBox x:Name="RPhone" Width="auto" TextChanged="RPhone_TextChanged"/>
-        <Label Content="Номер и серия паспорта"/>
-        <TextBox x:Name="RSeries" Width="auto" TextChanged="RSeries_TextChanged"/>
+        <TextBox x:Name="RSecondName" Width="200" HorizontalAlignment="Left" TextChanged="RSecondName_TextChanged"/>
+
         <DockPanel>
-            <Button x:Name="Change" 
-                    Content="Добавить" 
-                    Width="90" 
-                    Height="20" 
-                    IsEnabled="False"/>
+            <StackPanel>
+                <Label Content="Номер телефона"/>
+                <TextBox x:Name="RPhone" Width="200" PreviewTextInput="RPhone_PreviewTextInput" TextChanged="RPhone_TextChanged"/>
+            </StackPanel>
+            <StackPanel>
+                <Label Content="Номер и серия паспорта"/>
+                <TextBox x:Name="RSeries" Width="200" HorizontalAlignment="Left" PreviewTextInput="RSeries_PreviewTextInput" TextChanged="RSeries_TextChanged"/>
+            </StackPanel>
+        </DockPanel>
+
+        <DockPanel HorizontalAlignment="Right">
+            <Button x:Name="Add" 
+                    Content="✔" 
+                    Width="28" 
+                    Height="28" 
+                    IsEnabled="False" 
+                    Click="Add_Click"/>
             <Button x:Name="Chancel" 
-                    Content="Отменить" 
-                    Width="90" 
-                    Height="20" 
+                    Content="✘" 
+                    Width="28" 
+                    Height="28" 
                     Click="Chancel_Click"/>
         </DockPanel>
     </StackPanel>

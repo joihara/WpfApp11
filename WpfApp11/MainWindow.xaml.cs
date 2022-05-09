@@ -32,7 +32,9 @@ namespace WpfApp11
 
         }
         List<StructClient> list = new List<StructClient>();
-
+        /// <summary>
+        /// Обновление Таблицы с данными
+        /// </summary>
         private void UpdateTable()
         {
             list = fileUtil.ReadClients(LTypeUser).ToList();
@@ -43,6 +45,9 @@ namespace WpfApp11
             }
         }
 
+        /// <summary>
+        /// Регистрация нового пользователя
+        /// </summary>
         public void Register() {
             var userName = regUser.Text;
             var userPassword = regPass.Password;
@@ -66,8 +71,14 @@ namespace WpfApp11
             
         }
 
+        private string User;
+
+        /// <summary>
+        /// Проверка входа с учётными данными
+        /// </summary>
         public void Enter() {
             var userName = user.Text;
+            User = userName;
             var userPassword = password.Password;
             var isValidate = fileUtil.CheackUser(userName, userPassword);
             if (isValidate!=null)
@@ -75,6 +86,17 @@ namespace WpfApp11
                 EnterGrid.Visibility = Visibility.Collapsed;
                 View.Visibility = Visibility.Visible;
                 LTypeUser = isValidate.Value.TypeUser;
+
+                UserName.Content = $"Пользователь: {userName}";
+                UserType.Content = $"Группа: {LTypeUser}";
+                if (LTypeUser == EnumTypeUser.Consultant)
+                {
+                    AddRecord.Visibility = Visibility.Collapsed;
+                }
+                else {
+                    AddRecord.Visibility = Visibility.Visible;
+                }
+                AddRecord.IsEnabled = LTypeUser != EnumTypeUser.Consultant;
                 UpdateTable();
             }
             else
@@ -111,27 +133,82 @@ namespace WpfApp11
         }
 
         private StructClient SelectClient { set; get; }
+        private int selectIdinTable { set; get; }
         private EnumTypeUser LTypeUser { set; get; }
 
         private void UpdateRecord_Click(object sender, RoutedEventArgs e)
         {
-            new RecordChange(listView.SelectedIndex ,SelectClient, LTypeUser).ShowDialog();
+            var update = new RecordChange(SelectClient, LTypeUser, User);
+            update.ShowDialog();
+
+            if (!update.isCancel)
+            {
+                fileUtil.EditClient(listView.SelectedIndex, update.TempClient);
+                UpdateTable();
+            }
+
             UpdateRecord.IsEnabled = false;
-            UpdateTable();
         }
 
         private void listView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            SelectClient = list[listView.SelectedIndex];
-            UpdateRecord.IsEnabled = true;
+            selectIdinTable = listView.SelectedIndex;
+            if (selectIdinTable != -1)
+            {
+                SelectClient = list[selectIdinTable];
+                UpdateRecord.IsEnabled = true;
+                if (LTypeUser == EnumTypeUser.Administrator)
+                {
+                    DeleteRecord.IsEnabled = true;
+                    DeleteRecord.Visibility = Visibility.Visible;
+                }
+            }
         }
 
+        /// <summary>
+        /// Добавить запись
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void AddRecord_Click(object sender, RoutedEventArgs e)
         {
             var addDialog = new AddRecord();
             addDialog.ShowDialog();
-            fileUtil.AddClient(addDialog.client);
+            if(!addDialog.isCancel){
+                fileUtil.AddClient(addDialog.client);
+                UpdateTable();
+            }
             UpdateRecord.IsEnabled = false;
+        }
+
+        /// <summary>
+        /// Выход из учётной записи
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ExitUser_Click(object sender, RoutedEventArgs e)
+        {
+            EnterGrid.Visibility = Visibility.Visible;
+            View.Visibility = Visibility.Collapsed;
+        }
+
+        private void password_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == System.Windows.Input.Key.Enter) {
+                Enter();
+            }
+        }
+
+        /// <summary>
+        /// Удалить запись
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DeleteRecord_Click(object sender, RoutedEventArgs e)
+        {
+            DeleteRecord.IsEnabled = false;
+            DeleteRecord.Visibility = Visibility.Collapsed;
+            fileUtil.DeleteClient(selectIdinTable);
             UpdateTable();
         }
     }

@@ -161,8 +161,48 @@ namespace WpfApp11.Library
                     clients = reader.ToList();
                 }
 
+                var ser = clients[id].Passport_number_and_series;
+                if (client.Passport_number_and_series.Equals("**** ******")) {
+                    client.Passport_number_and_series = ser;
+                }
                 clients[id] = client;
+
                 FileStream fs = FileWait();
+
+                fs = new FileStream(filename, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
+                XmlSerializer x = new XmlSerializer(typeof(StructClient[]));
+                TextWriter writer = new StreamWriter(fs);
+                x.Serialize(writer, clients.ToArray());
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Удаление клиента по id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public bool DeleteClient(int id) {
+
+            try
+            {
+                List<StructClient> clients = new List<StructClient>();
+
+                var reader = ReadClients();
+
+                if (reader != null)
+                {
+                    clients = reader.ToList();
+                }
+
+                clients.RemoveAt(id);
+                FileStream fs = FileWait();
+
+                fs = new FileStream(filename, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
                 XmlSerializer x = new XmlSerializer(typeof(StructClient[]));
                 TextWriter writer = new StreamWriter(fs);
                 x.Serialize(writer, clients.ToArray());

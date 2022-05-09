@@ -5,14 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp11"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="824">
 
     <Window.Resources>
-        <ResourceDictionary Source="Dict.xaml" />
+        <ResourceDictionary Source="Dict.xaml"/>
     </Window.Resources>
     <Grid>
 
-        <Grid x:Name="EnterGrid">
+        <Grid x:Name="EnterGrid" Visibility="Collapsed">
             <Border HorizontalAlignment="Center" 
                 VerticalAlignment="Center" 
                 Width="170" 
@@ -26,7 +26,8 @@
                 <TextBox x:Name="user"/>
                 <Label Content="Пароль" 
                      Padding="5,0"/>
-                <PasswordBox x:Name="password"/>
+                <PasswordBox x:Name="password" 
+                             KeyUp="password_KeyUp"/>
                 <TextBlock x:Name="enterValidate"/>
                 <Button 
                     Content="Вход" Click="Button_Click_1"/>
@@ -34,9 +35,9 @@
                 <Button 
                     Content="Регистрация" Click="Button_Click"/>
             </StackPanel>
-        
 
-      </Grid>
+
+        </Grid>
 
         <Grid x:Name="RegisterGrid" 
               Visibility="Hidden">
@@ -61,31 +62,95 @@
                 <Button Content="Зарегистрироваться" Click="Button_Click_2"/>
                 <Button Content="Вернутся" Click="Button_Click_3"/>
             </StackPanel>
-           
+
         </Grid>
 
-        <Grid x:Name="View" Visibility="Collapsed"
-              >
-            <DockPanel>
-                <ListView x:Name="listView" Width="650" 
-                          SelectionChanged="listView_SelectionChanged">
+        <Grid x:Name="View" Visibility="Visible">
+            
+
+            <DockPanel HorizontalAlignment="Center"
+                       VerticalAlignment="Top" 
+                       Height="366" 
+                       Margin="0,58,0,0">
+                <ListView x:Name="listView" 
+                          SelectionChanged="listView_SelectionChanged" 
+                          Width="700"
+                          IsSynchronizedWithCurrentItem="True"
+                          >
                     <ListView.View>
                         <GridView>
-                            <GridViewColumn Header="Фамилия" DisplayMemberBinding="{Binding Last_name}"/>
-                            <GridViewColumn Header="Имя" DisplayMemberBinding="{Binding First_name}"/>
-                            <GridViewColumn Header="Отчество" DisplayMemberBinding="{Binding Second_name}"/>
-                            <GridViewColumn Header="Номер телефона" DisplayMemberBinding="{Binding Phone_number}"/>
-                            <GridViewColumn Width="200" Header="Серия, номер паспорта" DisplayMemberBinding="{Binding Passport_number_and_series}"/>
+                            <GridViewColumn Header="Фамилия" 
+                                            DisplayMemberBinding="{Binding Last_name}"/>
+                            <GridViewColumn Header="Имя" 
+                                            DisplayMemberBinding="{Binding First_name}"/>
+                            <GridViewColumn Header="Отчество" 
+                                            DisplayMemberBinding="{Binding Second_name}"/>
+                            <GridViewColumn Header="Номер телефона" 
+                                            DisplayMemberBinding="{Binding Phone_number}"/>
+                            <GridViewColumn Width="200" 
+                                            Header="Серия, номер паспорта" 
+                                            DisplayMemberBinding="{Binding Passport_number_and_series}"/>
                         </GridView>
                     </ListView.View>
                 </ListView>
-                <StackPanel Width="120">
-                    <Button x:Name="AddRecord" Content="Добавить" Click="AddRecord_Click"/>
-                    <Button x:Name="UpdateRecord" Content="Изменить" Click="UpdateRecord_Click" IsEnabled="False"/>
+                <StackPanel Width="55">
+                    <Button x:Name="AddRecord" 
+                            Content="✚" 
+                            Click="AddRecord_Click" 
+                            FontWeight="Bold" 
+                            FontSize="20" 
+                            HorizontalAlignment="Stretch" 
+                            VerticalAlignment="Stretch" 
+                            Height="32" 
+                            Width="32" 
+                            FontFamily="Times New Roman"/>
+                    <Button x:Name="UpdateRecord" 
+                            Content="✎" 
+                            Click="UpdateRecord_Click" 
+                            IsEnabled="False" 
+                            HorizontalContentAlignment="Center" 
+                            VerticalContentAlignment="Center" 
+                            VerticalAlignment="Center" 
+                            HorizontalAlignment="Center"
+                            Height="32"
+                            Width="32"/>
+                    <Button x:Name="DeleteRecord" 
+                            Content="✘" 
+                            IsEnabled="False" 
+                            HorizontalContentAlignment="Center" 
+                            VerticalContentAlignment="Center"
+                            VerticalAlignment="Center" 
+                            HorizontalAlignment="Center" 
+                            Height="32" Width="32"
+                            FontSize="18" 
+                            Click="DeleteRecord_Click" 
+                            Visibility="Collapsed"/>
+                    <Button x:Name="Exit" 
+                            Margin="0,350,0,0" 
+                            Content="Сменить пользователя" 
+                            VerticalAlignment="Bottom"/>
                 </StackPanel>
             </DockPanel>
-            
 
+            <Rectangle Fill="Black" 
+                       Height="1" 
+                       Margin="0,52,0,381"/>
+
+            <StackPanel>
+                <Label x:Name="UserName" 
+                       Content="Имя:"/>
+                <Label x:Name="UserType"
+                       Content="Группа:"/>
+            </StackPanel>
+
+            <Button x:Name="ExitUser" 
+                    Content="⍇" 
+                    Width="32" 
+                    Height="32" 
+                    HorizontalAlignment="Right" 
+                    VerticalAlignment="Top" 
+                    FontSize="20" 
+                    Click="ExitUser_Click"/>
 
         </Grid>
     </Grid>

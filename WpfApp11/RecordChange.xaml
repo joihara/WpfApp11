@@ -5,34 +5,49 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp11"
         mc:Ignorable="d"
-        Title="RecordChange" Height="350" Width="215" ResizeMode="NoResize" WindowStyle="SingleBorderWindow">
+        Title="RecordChange" Height="245" Width="455" ResizeMode="NoResize" WindowStyle="SingleBorderWindow">
     <Window.Resources>
         <ResourceDictionary Source="Dict.xaml" />
     </Window.Resources>
 
     <StackPanel x:Name="Base"
-                Width="200" 
-                HorizontalAlignment="Left">
-        <Label Content="Имя"/>
-        <TextBox x:Name="RFirstName" Width="auto"/>
-        <Label Content="Фамилия"/>
-        <TextBox x:Name="RLastName" Width="auto"/>
+                Width="426" 
+                HorizontalAlignment="Center">
+        <DockPanel LastChildFill="False">
+            <StackPanel>
+                <Label Content="Имя"/>
+                <TextBox x:Name="RFirstName" Width="200"/>
+            </StackPanel>
+            <StackPanel>
+                <Label Content="Фамилия"/>
+                <TextBox x:Name="RLastName" Width="200"/>
+            </StackPanel>
+        </DockPanel>
+
         <Label Content="Отчество"/>
-        <TextBox x:Name="RSecondName" Width="auto"/>
-        <Label Content="Номер телефона"/>
-        <TextBox x:Name="RPhone" Width="auto"/>
-        <Label Content="Номер и серия паспорта"/>
-        <TextBox x:Name="RSeries" Width="auto"/>
+        <TextBox x:Name="RSecondName" Width="200" HorizontalAlignment="Left"/>
+
         <DockPanel>
+            <StackPanel>
+                <Label Content="Номер телефона"/>
+                <TextBox x:Name="RPhone" Width="200" PreviewTextInput="RPhone_PreviewTextInput"/>
+            </StackPanel>
+            <StackPanel>
+                <Label Content="Номер и серия паспорта"/>
+                <TextBox x:Name="RSeries" Width="200" HorizontalAlignment="Left" PreviewTextInput="RSeries_PreviewTextInput"/>
+            </StackPanel>
+        </DockPanel>
+
+        <DockPanel HorizontalAlignment="Right">
             <Button x:Name="Change" 
-                    Content="Изменить" 
-                    Width="90" 
-                    Height="20" 
-                    IsEnabled="False"/>
+                    Content="✎" 
+                    Width="28" 
+                    Height="28" 
+                    IsEnabled="False" Click="Change_Click"/>
             <Button x:Name="Chancel" 
-                    Content="Отменить" 
-                    Width="90" 
-                    Height="20" 
+                    Content="✘" 
+                    Width="28" 
+                    Height="28" 
                     Click="Chancel_Click"/>
         </DockPanel>
     </StackPanel>
