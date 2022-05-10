@@ -1,4 +1,5 @@
 ﻿using System;
+using WpfApp11.Enum;
 
 namespace WpfApp11.Struct
 {
@@ -11,6 +12,7 @@ namespace WpfApp11.Struct
         public string Phone_number { set; get; } //Номер телефона
         public string Passport_number_and_series { set; get; } //Номер и серия паспорта
         public StructChangeType Change { set; get; } //Время изменения записи
+        public EnumTypeDepartment TypeUser { set; get; } //К какому отделу относится клиент
 
         public string this[int i]
         {

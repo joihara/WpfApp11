@@ -1,22 +1,35 @@
-﻿using System.Text.RegularExpressions;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Reflection;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using WpfApp11.Enum;
 using WpfApp11.Struct;
 
 namespace WpfApp11
 {
+
     /// <summary>
     /// Логика взаимодействия для RecordChange.xaml
     /// </summary>
     public partial class AddRecord : Window
     {
+        
+
         public StructClient client = new StructClient();
         public bool isCancel = true;
+
         public AddRecord()
         {
             InitializeComponent();
+
         }
+
+        
 
         private void Chancel_Click(object sender, RoutedEventArgs e)
         {
@@ -92,5 +105,12 @@ namespace WpfApp11
 
             Add.IsEnabled = FirstName && SecondName && LastName && Phone && Series;
         }
+
+        private void ComboTypeClient_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var index = ComboTypeClient.SelectedIndex;
+            client.TypeUser = (EnumTypeDepartment)index;
+        }
     }
+
 }

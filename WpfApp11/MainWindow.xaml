@@ -5,14 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp11"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="824">
+        Title="MainWindow" Height="450" Width="824" ResizeMode="NoResize">
 
     <Window.Resources>
         <ResourceDictionary Source="Dict.xaml"/>
     </Window.Resources>
     <Grid>
 
-        <Grid x:Name="EnterGrid" Visibility="Visible">
+        <Grid x:Name="EnterGrid" Visibility="Collapsed">
             <Border HorizontalAlignment="Center" 
                 VerticalAlignment="Center" 
                 Width="170" 
@@ -65,10 +65,10 @@
 
         </Grid>
 
-        <Grid x:Name="View" Visibility="Collapsed">
-            
+        <Grid x:Name="ViewGrid" Visibility="Collapsed" d:IsHidden="True">
 
-            <DockPanel HorizontalAlignment="Center"
+
+            <DockPanel x:Name="ClientInform" HorizontalAlignment="Center"
                        VerticalAlignment="Top" 
                        Height="366" 
                        Margin="0,58,0,0">
@@ -93,7 +93,17 @@
                         </GridView>
                     </ListView.View>
                 </ListView>
-                <StackPanel Width="55">
+                <StackPanel x:Name="Buttons" Width="55">
+                    <Button x:Name="OpenClient" 
+                            Content="🔎" 
+                            FontWeight="Bold" 
+                            FontSize="20" 
+                            HorizontalAlignment="Stretch" 
+                            VerticalAlignment="Stretch" 
+                            Height="32" 
+                            Width="32" 
+                            FontFamily="Times New Roman" Click="OpenClient_Click"/>
+
                     <Button x:Name="AddRecord" 
                             Content="✚" 
                             Click="AddRecord_Click" 
@@ -125,10 +135,8 @@
                             FontSize="18" 
                             Click="DeleteRecord_Click" 
                             Visibility="Collapsed"/>
-                    <Button x:Name="Exit" 
-                            Margin="0,350,0,0" 
-                            Content="Сменить пользователя" 
-                            VerticalAlignment="Bottom"/>
+
+
                 </StackPanel>
             </DockPanel>
 
@@ -136,7 +144,7 @@
                        Height="1" 
                        Margin="0,52,0,381"/>
 
-            <StackPanel>
+            <StackPanel x:Name="UserInfo">
                 <Label x:Name="UserName" 
                        Content="Имя:"/>
                 <Label x:Name="UserType"
@@ -151,6 +159,95 @@
                     VerticalAlignment="Top" 
                     FontSize="20" 
                     Click="ExitUser_Click"/>
+
+        </Grid>
+        <Grid x:Name="ClientInfo" Visibility="Visible">
+            <DockPanel x:Name="ExitPanel" Margin="0,0,10,0" HorizontalAlignment="Right" VerticalAlignment="Top">
+                <Button x:Name="ExitToClients" 
+                        Content="➨" 
+                        Width="32" 
+                        Height="32"
+                        HorizontalAlignment="Right" 
+                        VerticalAlignment="Top" 
+                        FontSize="20"
+                        Click="ExitToClients_Click" Grid.IsSharedSizeScope="True" FlowDirection="LeftToRight" RenderTransformOrigin="0.5,0.5">
+                    <Button.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform Angle="180"/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </Button.RenderTransform>
+                </Button>
+                <Button x:Name="ExitToEnter" 
+                        Content="⍇" 
+                        Width="32" 
+                        Height="32"
+                        HorizontalAlignment="Right" 
+                        VerticalAlignment="Top" 
+                        FontSize="20"
+                        Click="ExitUser_Click"/>
+            </DockPanel>
+
+
+            <Border x:Name="Deposit" Margin="10,193,604,12">
+                <StackPanel>
+                    <DockPanel LastChildFill="False" 
+                           VerticalAlignment="Top">
+                        <Label Content="Вклады:" 
+                       VerticalAlignment="Center" 
+                       HorizontalAlignment="Center" FontSize="16"/>
+                        <Button x:Name="AddDeposit" 
+                        Content="✚" 
+                        Width="27" 
+                        Height="27"/>
+                        <Button x:Name="EditDeposit" 
+                        Content="✎" 
+                        Width="27" 
+                        Height="27"/>
+                    </DockPanel>
+
+
+                </StackPanel>
+
+            </Border>
+            <Border x:Name="Credit" Margin="240,195,369,10">
+                <StackPanel>
+                    <DockPanel LastChildFill="False" 
+                           VerticalAlignment="Top">
+                        <Label Content="Кредиты:" 
+                           HorizontalAlignment="Stretch" 
+                           VerticalAlignment="Center" 
+                           FontSize="16"/>
+                        <Button x:Name="AddCredit" 
+                        Content="✚" 
+                        Width="27" 
+                        Height="27"/>
+                        <Button x:Name="EditCredit" 
+                        Content="✎" 
+                        Width="27" 
+                        Height="27"/>
+                    </DockPanel>
+                </StackPanel>
+
+            </Border>
+            <Border Margin="8,0,369,246">
+            <StackPanel>
+                    <DockPanel>
+                        <Label x:Name="LLastName" Content="Отчество:"/>
+                    </DockPanel>
+                    <DockPanel>
+                        <Label x:Name="LFirstName" Content="Имя:"/>
+                    </DockPanel>
+                    <DockPanel>
+                        <Label x:Name="LSecondName" Content="Фамилия:"/>
+                    </DockPanel>
+                    <DockPanel>
+                        <Label x:Name="LTypeClient" Content="Клиент:"/>
+                    </DockPanel>
+                </StackPanel>
+            </Border>
 
         </Grid>
     </Grid>

@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using WpfApp11.Enum;
 using WpfApp11.Library;
 using WpfApp11.Struct;
+
 
 namespace WpfApp11
 {
@@ -19,11 +22,17 @@ namespace WpfApp11
         {
 
             InitializeComponent();
-
-            //LTypeUser = EnumTypeUser.Consultant; //Debug
+            SwitchVisibility(EnumTypeSwitch.View);
+            Debug();
 
             
             Console.WriteLine();
+        }
+
+        private void Debug() {
+            var userName = "joihara";
+            var userPassword = "adgjm";
+            Enter(userName, userPassword);
         }
 
         private void enter_button_Click(object sender, RoutedEventArgs e)
@@ -37,6 +46,10 @@ namespace WpfApp11
         /// </summary>
         private void UpdateTable()
         {
+            OpenClient.IsEnabled = false;
+            DeleteRecord.IsEnabled = false;
+            DeleteRecord.Visibility = Visibility.Collapsed;
+            UpdateRecord.IsEnabled = false;
             list = fileUtil.ReadClients(LTypeUser).ToList();
             listView.Items.Clear();
             foreach (var item in list)
@@ -76,15 +89,12 @@ namespace WpfApp11
         /// <summary>
         /// Проверка входа с учётными данными
         /// </summary>
-        public void Enter() {
-            var userName = user.Text;
+        public void Enter(string userName, string userPassword) {
             User = userName;
-            var userPassword = password.Password;
             var isValidate = fileUtil.CheackUser(userName, userPassword);
             if (isValidate!=null)
             {
-                EnterGrid.Visibility = Visibility.Collapsed;
-                View.Visibility = Visibility.Visible;
+                SwitchVisibility(EnumTypeSwitch.View);
                 LTypeUser = isValidate.Value.TypeUser;
 
                 UserName.Content = $"Пользователь: {userName}";
@@ -109,13 +119,12 @@ namespace WpfApp11
         //Кнопка Регистрация
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            EnterGrid.Visibility = Visibility.Hidden;
-            RegisterGrid.Visibility = Visibility.Visible;
+            SwitchVisibility(EnumTypeSwitch.Register);
         }
         //Кнопка Вход
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            Enter();
+            Enter(user.Text, password.Password);
         }
         //Кнопка Зарегистрироваться
         private void Button_Click_2(object sender, RoutedEventArgs e)
@@ -128,12 +137,19 @@ namespace WpfApp11
             regUser.Text = "";
             regPass.Password = "";
             reRegPass.Password = "";
-            EnterGrid.Visibility = Visibility.Visible;
-            RegisterGrid.Visibility = Visibility.Hidden;
+            SwitchVisibility(EnumTypeSwitch.Enter);
         }
-
+        /// <summary>
+        /// Выбранный клиент из списка
+        /// </summary>
         private StructClient SelectClient { set; get; }
+        /// <summary>
+        /// Номер клинта в списке
+        /// </summary>
         private int selectIdinTable { set; get; }
+        /// <summary>
+        /// Тип пользователя
+        /// </summary>
         private EnumTypeUser LTypeUser { set; get; }
 
         private void UpdateRecord_Click(object sender, RoutedEventArgs e)
@@ -157,6 +173,7 @@ namespace WpfApp11
             {
                 SelectClient = list[selectIdinTable];
                 UpdateRecord.IsEnabled = true;
+                OpenClient.IsEnabled = true;
                 if (LTypeUser == EnumTypeUser.Administrator)
                 {
                     DeleteRecord.IsEnabled = true;
@@ -188,14 +205,13 @@ namespace WpfApp11
         /// <param name="e"></param>
         private void ExitUser_Click(object sender, RoutedEventArgs e)
         {
-            EnterGrid.Visibility = Visibility.Visible;
-            View.Visibility = Visibility.Collapsed;
+            SwitchVisibility(EnumTypeSwitch.Enter);
         }
 
         private void password_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
         {
             if (e.Key == System.Windows.Input.Key.Enter) {
-                Enter();
+                Enter(user.Text, password.Password);
             }
         }
 
@@ -211,5 +227,66 @@ namespace WpfApp11
             fileUtil.DeleteClient(selectIdinTable);
             UpdateTable();
         }
+
+        /// <summary>
+        /// Переключение между слоями
+        /// </summary>
+        /// <param name="type"></param>
+        private void SwitchVisibility(EnumTypeSwitch type) {
+            bool isEnter = type == EnumTypeSwitch.Enter;
+            bool isRegister = type == EnumTypeSwitch.Register;
+            bool isView = type == EnumTypeSwitch.View;
+            bool isClientInfo = type == EnumTypeSwitch.ClientInfo;
+
+            VisibilityEnter(isEnter, EnterGrid);
+            VisibilityEnter(isRegister, RegisterGrid);
+            VisibilityEnter(isView, ViewGrid);
+            VisibilityEnter(isClientInfo, ClientInfo);
+
+        }
+
+        /// <summary>
+        /// Переключение видимости для сетки
+        /// </summary>
+        /// <param name="view"></param>
+        /// <param name="grid"></param>
+        private void VisibilityEnter(bool view, Grid grid)
+        {
+            if (view) {
+                grid.Visibility = Visibility.Visible;
+            } else {
+                grid.Visibility = Visibility.Collapsed;
+            }
+            
+        }
+
+        /// <summary>
+        /// Открытие информации о клиенте
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OpenClient_Click(object sender, RoutedEventArgs e)
+        {
+            LLastName.Content = "Фамилия: " + SelectClient.Last_name;
+            LFirstName.Content = "Имя: " + SelectClient.First_name;
+            LSecondName.Content = "Отчество: " + SelectClient.Second_name;
+            LTypeClient.Content = "Клиент: " + SelectClient.TypeUser.GetDescription();
+
+            SwitchVisibility(EnumTypeSwitch.ClientInfo);
+        }
+
+        private void ExitToClients_Click(object sender, RoutedEventArgs e)
+        {
+            UpdateTable();
+            SwitchVisibility(EnumTypeSwitch.View);
+        }
+
+        
+    }
+    /// <summary>
+    /// Нумерация слоя для отображения
+    /// </summary>
+    enum EnumTypeSwitch { 
+        Enter, Register, View, ClientInfo
     }
 }

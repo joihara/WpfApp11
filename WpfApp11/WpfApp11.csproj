@@ -56,11 +56,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Enum\EnumTypeDepartment.cs" />
     <Compile Include="Enum\EnumTypeField.cs" />
     <Compile Include="Enum\EnumTypeUser.cs" />
     <Compile Include="AddRecord.xaml.cs">
       <DependentUpon>AddRecord.xaml</DependentUpon>
     </Compile>
+    <Compile Include="EnumToItemsSource.cs" />
+    <Compile Include="Library\EnumHelper.cs" />
     <Compile Include="RecordChange.xaml.cs">
       <DependentUpon>RecordChange.xaml</DependentUpon>
     </Compile>
