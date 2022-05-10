@@ -17,7 +17,7 @@ namespace WpfApp11
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly FileUtil fileUtil = new FileUtil();
+        
         public MainWindow()
         {
 
@@ -29,93 +29,34 @@ namespace WpfApp11
             Console.WriteLine();
         }
 
-        private void Debug() {
+        #region Value
+        private readonly FileUtil fileUtil = new FileUtil();
+        List<StructClient> list = new List<StructClient>();
+        private string User;
+        /// <summary>
+        /// Выбранный клиент из списка
+        /// </summary>
+        private StructClient SelectClient { set; get; }
+        /// <summary>
+        /// Номер клинта в списке
+        /// </summary>
+        private int selectIdinTable { set; get; }
+        /// <summary>
+        /// Тип пользователя
+        /// </summary>
+        private EnumTypeUser LTypeUser { set; get; }
+        #endregion
+
+        #region Debug
+        private void Debug()
+        {
             var userName = "joihara";
             var userPassword = "adgjm";
             Enter(userName, userPassword);
         }
+        #endregion 
 
-        private void enter_button_Click(object sender, RoutedEventArgs e)
-        {
-            
-
-        }
-        List<StructClient> list = new List<StructClient>();
-        /// <summary>
-        /// Обновление Таблицы с данными
-        /// </summary>
-        private void UpdateTable()
-        {
-            OpenClient.IsEnabled = false;
-            DeleteRecord.IsEnabled = false;
-            DeleteRecord.Visibility = Visibility.Collapsed;
-            UpdateRecord.IsEnabled = false;
-            list = fileUtil.ReadClients(LTypeUser).ToList();
-            listView.Items.Clear();
-            foreach (var item in list)
-            {
-                listView.Items.Add(item);
-            }
-        }
-
-        /// <summary>
-        /// Регистрация нового пользователя
-        /// </summary>
-        public void Register() {
-            var userName = regUser.Text;
-            var userPassword = regPass.Password;
-            var reUserPassword = reRegPass.Password;
-
-            if (userPassword == reUserPassword)
-            {
-                var isValidate = fileUtil.CreateUser(userName, userPassword);
-                if (!isValidate)
-                {
-                    registerValidate.Text = "Пользователь уже существует";
-                }
-                else {
-                    registerValidate.Text = "Пользователь Зарегистрирован";
-                }
-            }
-            else {
-                registerValidate.Text = "Пароли не совпадают";
-            }
-
-            
-        }
-
-        private string User;
-
-        /// <summary>
-        /// Проверка входа с учётными данными
-        /// </summary>
-        public void Enter(string userName, string userPassword) {
-            User = userName;
-            var isValidate = fileUtil.CheackUser(userName, userPassword);
-            if (isValidate!=null)
-            {
-                SwitchVisibility(EnumTypeSwitch.View);
-                LTypeUser = isValidate.Value.TypeUser;
-
-                UserName.Content = $"Пользователь: {userName}";
-                UserType.Content = $"Группа: {LTypeUser}";
-                if (LTypeUser == EnumTypeUser.Consultant)
-                {
-                    AddRecord.Visibility = Visibility.Collapsed;
-                }
-                else {
-                    AddRecord.Visibility = Visibility.Visible;
-                }
-                AddRecord.IsEnabled = LTypeUser != EnumTypeUser.Consultant;
-                UpdateTable();
-            }
-            else
-            {
-                enterValidate.Text = "Неверные данные";
-            }
-
-        }
-
+        #region Buttons
         //Кнопка Регистрация
         private void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -139,19 +80,6 @@ namespace WpfApp11
             reRegPass.Password = "";
             SwitchVisibility(EnumTypeSwitch.Enter);
         }
-        /// <summary>
-        /// Выбранный клиент из списка
-        /// </summary>
-        private StructClient SelectClient { set; get; }
-        /// <summary>
-        /// Номер клинта в списке
-        /// </summary>
-        private int selectIdinTable { set; get; }
-        /// <summary>
-        /// Тип пользователя
-        /// </summary>
-        private EnumTypeUser LTypeUser { set; get; }
-
         private void UpdateRecord_Click(object sender, RoutedEventArgs e)
         {
             var update = new RecordChange(SelectClient, LTypeUser, User);
@@ -165,23 +93,6 @@ namespace WpfApp11
 
             UpdateRecord.IsEnabled = false;
         }
-
-        private void listView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            selectIdinTable = listView.SelectedIndex;
-            if (selectIdinTable != -1)
-            {
-                SelectClient = list[selectIdinTable];
-                UpdateRecord.IsEnabled = true;
-                OpenClient.IsEnabled = true;
-                if (LTypeUser == EnumTypeUser.Administrator)
-                {
-                    DeleteRecord.IsEnabled = true;
-                    DeleteRecord.Visibility = Visibility.Visible;
-                }
-            }
-        }
-
         /// <summary>
         /// Добавить запись
         /// </summary>
@@ -191,7 +102,8 @@ namespace WpfApp11
         {
             var addDialog = new AddRecord();
             addDialog.ShowDialog();
-            if(!addDialog.isCancel){
+            if (!addDialog.isCancel)
+            {
                 fileUtil.AddClient(addDialog.client);
                 UpdateTable();
             }
@@ -210,7 +122,8 @@ namespace WpfApp11
 
         private void password_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter) {
+            if (e.Key == System.Windows.Input.Key.Enter)
+            {
                 Enter(user.Text, password.Password);
             }
         }
@@ -227,39 +140,6 @@ namespace WpfApp11
             fileUtil.DeleteClient(selectIdinTable);
             UpdateTable();
         }
-
-        /// <summary>
-        /// Переключение между слоями
-        /// </summary>
-        /// <param name="type"></param>
-        private void SwitchVisibility(EnumTypeSwitch type) {
-            bool isEnter = type == EnumTypeSwitch.Enter;
-            bool isRegister = type == EnumTypeSwitch.Register;
-            bool isView = type == EnumTypeSwitch.View;
-            bool isClientInfo = type == EnumTypeSwitch.ClientInfo;
-
-            VisibilityEnter(isEnter, EnterGrid);
-            VisibilityEnter(isRegister, RegisterGrid);
-            VisibilityEnter(isView, ViewGrid);
-            VisibilityEnter(isClientInfo, ClientInfo);
-
-        }
-
-        /// <summary>
-        /// Переключение видимости для сетки
-        /// </summary>
-        /// <param name="view"></param>
-        /// <param name="grid"></param>
-        private void VisibilityEnter(bool view, Grid grid)
-        {
-            if (view) {
-                grid.Visibility = Visibility.Visible;
-            } else {
-                grid.Visibility = Visibility.Collapsed;
-            }
-            
-        }
-
         /// <summary>
         /// Открытие информации о клиенте
         /// </summary>
@@ -280,8 +160,166 @@ namespace WpfApp11
             UpdateTable();
             SwitchVisibility(EnumTypeSwitch.View);
         }
+        #endregion
 
-        
+        #region Func
+        /// <summary>
+        /// Обновление Таблицы с данными
+        /// </summary>
+        private void UpdateTable()
+        {
+            OpenClient.IsEnabled = false;
+            DeleteRecord.IsEnabled = false;
+            DeleteRecord.Visibility = Visibility.Collapsed;
+            UpdateRecord.IsEnabled = false;
+            list = fileUtil.ReadClients(LTypeUser).ToList();
+            listView.Items.Clear();
+            foreach (var item in list)
+            {
+                listView.Items.Add(item);
+            }
+        }
+
+        /// <summary>
+        /// Регистрация нового пользователя
+        /// </summary>
+        public void Register()
+        {
+            var userName = regUser.Text;
+            var userPassword = regPass.Password;
+            var reUserPassword = reRegPass.Password;
+
+            if (userPassword == reUserPassword)
+            {
+                var isValidate = fileUtil.CreateUser(userName, userPassword);
+                if (!isValidate)
+                {
+                    registerValidate.Text = "Пользователь уже существует";
+                }
+                else
+                {
+                    registerValidate.Text = "Пользователь Зарегистрирован";
+                }
+            }
+            else
+            {
+                registerValidate.Text = "Пароли не совпадают";
+            }
+
+
+        }
+
+        /// <summary>
+        /// Проверка входа с учётными данными
+        /// </summary>
+        public void Enter(string userName, string userPassword)
+        {
+            User = userName;
+            var isValidate = fileUtil.CheackUser(userName, userPassword);
+            if (isValidate != null)
+            {
+                SwitchVisibility(EnumTypeSwitch.View);
+                LTypeUser = isValidate.Value.TypeUser;
+
+                UserName.Content = $"Пользователь: {userName}";
+                UserType.Content = $"Группа: {LTypeUser}";
+                if (LTypeUser == EnumTypeUser.Consultant)
+                {
+                    AddRecord.Visibility = Visibility.Collapsed;
+                }
+                else
+                {
+                    AddRecord.Visibility = Visibility.Visible;
+                }
+                AddRecord.IsEnabled = LTypeUser != EnumTypeUser.Consultant;
+                UpdateTable();
+            }
+            else
+            {
+                enterValidate.Text = "Неверные данные";
+            }
+
+        }
+        /// <summary>
+        /// Переключение между слоями
+        /// </summary>
+        /// <param name="type"></param>
+        private void SwitchVisibility(EnumTypeSwitch type)
+        {
+            bool isEnter = type == EnumTypeSwitch.Enter;
+            bool isRegister = type == EnumTypeSwitch.Register;
+            bool isView = type == EnumTypeSwitch.View;
+            bool isClientInfo = type == EnumTypeSwitch.ClientInfo;
+
+            VisibilityEnter(isEnter, EnterGrid);
+            VisibilityEnter(isRegister, RegisterGrid);
+            VisibilityEnter(isView, ViewGrid);
+            VisibilityEnter(isClientInfo, ClientInfo);
+
+        }
+
+        /// <summary>
+        /// Переключение видимости для сетки
+        /// </summary>
+        /// <param name="view"></param>
+        /// <param name="grid"></param>
+        private void VisibilityEnter(bool view, Grid grid)
+        {
+            if (view)
+            {
+                grid.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                grid.Visibility = Visibility.Collapsed;
+            }
+
+        }
+        #endregion
+
+        #region ListBox
+        private void listView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            selectIdinTable = listView.SelectedIndex;
+            if (selectIdinTable != -1)
+            {
+                SelectClient = list[selectIdinTable];
+                UpdateRecord.IsEnabled = true;
+                OpenClient.IsEnabled = true;
+                if (LTypeUser == EnumTypeUser.Administrator)
+                {
+                    DeleteRecord.IsEnabled = true;
+                    DeleteRecord.Visibility = Visibility.Visible;
+                }
+            }
+        }
+        #endregion
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
     /// <summary>
     /// Нумерация слоя для отображения
